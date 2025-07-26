@@ -1,11 +1,10 @@
-import { NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
+const { PrismaClient } = require('@prisma/client')
 
 const prisma = new PrismaClient()
 
-export async function GET() {
+async function setupProductionDatabase() {
   try {
-    console.log('🚀 Configurando base de datos...')
+    console.log('🚀 Configurando base de datos de producción...')
 
     // Verificar conexión
     await prisma.$connect()
@@ -243,22 +242,12 @@ export async function GET() {
 
     console.log('🎉 Configuración completada exitosamente!')
 
-    return NextResponse.json({ 
-      success: true, 
-      message: 'Database setup completed successfully',
-      productCount: await prisma.product.count()
-    })
-
   } catch (error) {
     console.error('❌ Error en la configuración:', error)
-    return NextResponse.json(
-      { 
-        success: false, 
-        error: error instanceof Error ? error.message : 'Unknown error' 
-      },
-      { status: 500 }
-    )
+    process.exit(1)
   } finally {
     await prisma.$disconnect()
   }
-} 
+}
+
+setupProductionDatabase() 
