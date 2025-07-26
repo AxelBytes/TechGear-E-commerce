@@ -1,8 +1,9 @@
-const { PrismaClient } = require('@prisma/client')
+import { NextResponse } from 'next/server'
+import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-exports.handler = async (event, context) => {
+export async function GET() {
   try {
     console.log('🚀 Configurando base de datos...')
 
@@ -20,33 +21,33 @@ exports.handler = async (event, context) => {
       
       // Categorías
       const categories = await Promise.all([
-        prisma.category.create({ data: { name: 'Smartphones', description: 'Teléfonos inteligentes' } }),
-        prisma.category.create({ data: { name: 'Laptops', description: 'Computadoras portátiles' } }),
-        prisma.category.create({ data: { name: 'Tablets', description: 'Tablets y iPads' } }),
-        prisma.category.create({ data: { name: 'Auriculares', description: 'Auriculares y audífonos' } }),
-        prisma.category.create({ data: { name: 'Smartwatches', description: 'Relojes inteligentes' } }),
-        prisma.category.create({ data: { name: 'Accesorios', description: 'Accesorios tecnológicos' } }),
-        prisma.category.create({ data: { name: 'Gaming', description: 'Productos para gaming' } }),
-        prisma.category.create({ data: { name: 'Audio', description: 'Sistemas de audio' } })
+        prisma.category.create({ data: { name: 'Smartphones', description: 'Teléfonos inteligentes', slug: 'smartphones' } }),
+        prisma.category.create({ data: { name: 'Laptops', description: 'Computadoras portátiles', slug: 'laptops' } }),
+        prisma.category.create({ data: { name: 'Tablets', description: 'Tablets y iPads', slug: 'tablets' } }),
+        prisma.category.create({ data: { name: 'Auriculares', description: 'Auriculares y audífonos', slug: 'auriculares' } }),
+        prisma.category.create({ data: { name: 'Smartwatches', description: 'Relojes inteligentes', slug: 'smartwatches' } }),
+        prisma.category.create({ data: { name: 'Accesorios', description: 'Accesorios tecnológicos', slug: 'accesorios' } }),
+        prisma.category.create({ data: { name: 'Gaming', description: 'Productos para gaming', slug: 'gaming' } }),
+        prisma.category.create({ data: { name: 'Audio', description: 'Sistemas de audio', slug: 'audio' } })
       ])
 
       // Marcas
       const brands = await Promise.all([
-        prisma.brand.create({ data: { name: 'Apple' } }),
-        prisma.brand.create({ data: { name: 'Samsung' } }),
-        prisma.brand.create({ data: { name: 'Sony' } }),
-        prisma.brand.create({ data: { name: 'Google' } }),
-        prisma.brand.create({ data: { name: 'Dell' } }),
-        prisma.brand.create({ data: { name: 'HP' } }),
-        prisma.brand.create({ data: { name: 'ASUS' } }),
-        prisma.brand.create({ data: { name: 'Bose' } }),
-        prisma.brand.create({ data: { name: 'JBL' } }),
-        prisma.brand.create({ data: { name: 'Logitech' } }),
-        prisma.brand.create({ data: { name: 'Razer' } }),
-        prisma.brand.create({ data: { name: 'Microsoft' } }),
-        prisma.brand.create({ data: { name: 'Lenovo' } }),
-        prisma.brand.create({ data: { name: 'Acer' } }),
-        prisma.brand.create({ data: { name: 'OnePlus' } })
+        prisma.brand.create({ data: { name: 'Apple', slug: 'apple' } }),
+        prisma.brand.create({ data: { name: 'Samsung', slug: 'samsung' } }),
+        prisma.brand.create({ data: { name: 'Sony', slug: 'sony' } }),
+        prisma.brand.create({ data: { name: 'Google', slug: 'google' } }),
+        prisma.brand.create({ data: { name: 'Dell', slug: 'dell' } }),
+        prisma.brand.create({ data: { name: 'HP', slug: 'hp' } }),
+        prisma.brand.create({ data: { name: 'ASUS', slug: 'asus' } }),
+        prisma.brand.create({ data: { name: 'Bose', slug: 'bose' } }),
+        prisma.brand.create({ data: { name: 'JBL', slug: 'jbl' } }),
+        prisma.brand.create({ data: { name: 'Logitech', slug: 'logitech' } }),
+        prisma.brand.create({ data: { name: 'Razer', slug: 'razer' } }),
+        prisma.brand.create({ data: { name: 'Microsoft', slug: 'microsoft' } }),
+        prisma.brand.create({ data: { name: 'Lenovo', slug: 'lenovo' } }),
+        prisma.brand.create({ data: { name: 'Acer', slug: 'acer' } }),
+        prisma.brand.create({ data: { name: 'OnePlus', slug: 'oneplus' } })
       ])
 
       // Productos principales
@@ -59,7 +60,9 @@ exports.handler = async (event, context) => {
           categoryId: categories[0].id,
           brandId: brands[0].id,
           stock: 25,
-          isFeatured: true
+          isFeatured: true,
+          slug: 'iphone-15-pro-max',
+          sku: 'IPH15PM-001'
         },
         {
           name: 'Samsung Galaxy S24 Ultra',
@@ -69,7 +72,9 @@ exports.handler = async (event, context) => {
           categoryId: categories[0].id,
           brandId: brands[1].id,
           stock: 30,
-          isFeatured: true
+          isFeatured: true,
+          slug: 'samsung-galaxy-s24-ultra',
+          sku: 'SGS24U-001'
         },
         {
           name: 'MacBook Pro 16" M3 Max',
@@ -79,7 +84,9 @@ exports.handler = async (event, context) => {
           categoryId: categories[1].id,
           brandId: brands[0].id,
           stock: 10,
-          isFeatured: true
+          isFeatured: true,
+          slug: 'macbook-pro-16-m3-max',
+          sku: 'MBP16M3-001'
         },
         {
           name: 'Dell XPS 15',
@@ -89,7 +96,9 @@ exports.handler = async (event, context) => {
           categoryId: categories[1].id,
           brandId: brands[4].id,
           stock: 12,
-          isFeatured: true
+          isFeatured: true,
+          slug: 'dell-xps-15',
+          sku: 'DXPS15-001'
         },
         {
           name: 'iPad Pro 12.9" M2',
@@ -99,7 +108,9 @@ exports.handler = async (event, context) => {
           categoryId: categories[2].id,
           brandId: brands[0].id,
           stock: 22,
-          isFeatured: true
+          isFeatured: true,
+          slug: 'ipad-pro-12-9-m2',
+          sku: 'IPAD12M2-001'
         },
         {
           name: 'AirPods Pro 2',
@@ -109,7 +120,9 @@ exports.handler = async (event, context) => {
           categoryId: categories[3].id,
           brandId: brands[0].id,
           stock: 50,
-          isFeatured: true
+          isFeatured: true,
+          slug: 'airpods-pro-2',
+          sku: 'APP2-001'
         },
         {
           name: 'Sony WH-1000XM5',
@@ -119,7 +132,9 @@ exports.handler = async (event, context) => {
           categoryId: categories[3].id,
           brandId: brands[2].id,
           stock: 35,
-          isFeatured: true
+          isFeatured: true,
+          slug: 'sony-wh-1000xm5',
+          sku: 'SWHXM5-001'
         },
         {
           name: 'Apple Watch Series 9',
@@ -129,7 +144,9 @@ exports.handler = async (event, context) => {
           categoryId: categories[4].id,
           brandId: brands[0].id,
           stock: 40,
-          isFeatured: true
+          isFeatured: true,
+          slug: 'apple-watch-series-9',
+          sku: 'AWS9-001'
         },
         {
           name: 'Logitech MX Master 3S',
@@ -139,7 +156,9 @@ exports.handler = async (event, context) => {
           categoryId: categories[5].id,
           brandId: brands[9].id,
           stock: 60,
-          isFeatured: true
+          isFeatured: true,
+          slug: 'logitech-mx-master-3s',
+          sku: 'LMX3S-001'
         },
         {
           name: 'Razer BlackShark V2 Pro',
@@ -149,7 +168,9 @@ exports.handler = async (event, context) => {
           categoryId: categories[6].id,
           brandId: brands[10].id,
           stock: 25,
-          isFeatured: true
+          isFeatured: true,
+          slug: 'razer-blackshark-v2-pro',
+          sku: 'RBSV2P-001'
         },
         {
           name: 'Bose SoundLink Revolve+',
@@ -159,7 +180,9 @@ exports.handler = async (event, context) => {
           categoryId: categories[7].id,
           brandId: brands[7].id,
           stock: 35,
-          isFeatured: true
+          isFeatured: true,
+          slug: 'bose-soundlink-revolve-plus',
+          sku: 'BSLRP-001'
         },
         {
           name: 'Google Pixel 8 Pro',
@@ -169,7 +192,9 @@ exports.handler = async (event, context) => {
           categoryId: categories[0].id,
           brandId: brands[3].id,
           stock: 20,
-          isFeatured: false
+          isFeatured: false,
+          slug: 'google-pixel-8-pro',
+          sku: 'GP8P-001'
         },
         {
           name: 'ASUS ROG Strix G16',
@@ -179,7 +204,9 @@ exports.handler = async (event, context) => {
           categoryId: categories[1].id,
           brandId: brands[6].id,
           stock: 8,
-          isFeatured: false
+          isFeatured: false,
+          slug: 'asus-rog-strix-g16',
+          sku: 'AROGG16-001'
         },
         {
           name: 'Samsung Galaxy Tab S9 Ultra',
@@ -189,7 +216,9 @@ exports.handler = async (event, context) => {
           categoryId: categories[2].id,
           brandId: brands[1].id,
           stock: 15,
-          isFeatured: false
+          isFeatured: false,
+          slug: 'samsung-galaxy-tab-s9-ultra',
+          sku: 'SGTS9U-001'
         },
         {
           name: 'Bose QuietComfort 45',
@@ -199,7 +228,9 @@ exports.handler = async (event, context) => {
           categoryId: categories[3].id,
           brandId: brands[7].id,
           stock: 28,
-          isFeatured: false
+          isFeatured: false,
+          slug: 'bose-quietcomfort-45',
+          sku: 'BQC45-001'
         }
       ]
 
@@ -212,17 +243,21 @@ exports.handler = async (event, context) => {
 
     console.log('🎉 Configuración completada exitosamente!')
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ message: 'Database setup completed successfully' })
-    }
+    return NextResponse.json({ 
+      success: true, 
+      message: 'Database setup completed successfully',
+      productCount: await prisma.product.count()
+    })
 
   } catch (error) {
     console.error('❌ Error en la configuración:', error)
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: error.message })
-    }
+    return NextResponse.json(
+      { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      },
+      { status: 500 }
+    )
   } finally {
     await prisma.$disconnect()
   }
